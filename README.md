@@ -53,3 +53,8 @@ DEBUG=$project_name:* npm start
 - Use [html2pug](http://html2pug.com/) to convert html to pug
 - Use [Bootstrap starter template](http://getbootstrap.com/examples/starter-template/) as the template
 - Revise `layout.pug`
+- add `about`, `contact` routes variables in `app.js`
+- add `about.js`, `contact.js` in `/routes`
+- add `about.pug`, `contact.pug` in `/views`
+- (**Important!**)to enable nodemailer, generate another password for external applications to replace the original 2-step authorization
+- create `router.post()` in `contact.js`
