@@ -6,7 +6,7 @@ html
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width, initial-scale=1')
     meta(name='description', content='')
-    link(rel='stylesheet', href='/stylesheets/bootstrap.css')
+    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
     nav.navbar.navbar-inverse.navbar-fixed-top
@@ -21,12 +21,14 @@ html
                 a.navbar-brand(href='#') Express Website
             #navbar.collapse.navbar-collapse
                 ul.nav.navbar-nav
-                    li.active
-                        a(href='#') Home
-                    li
-                        a(href='#about') About
-                    li
-                        a(href='#contact') Contact
+                    li(class=(title === 'Home' ? 'active' : ''))
+                        a(href='/') Home
+                    li(class=(title === 'About' ? 'active' : ''))
+                        a(href='/about') About
+                    li(class=(title === 'Contact' ? 'active' : ''))
+                        a(href='/contact') Contact
     block content
+    footer
+        p Yao-Jen Kuo &copy; 2017, All Rights Reserved
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
-    script(src='javascripts/bootstrap.js')
+    script(src='javascripts/bootstrap.min.js')
