@@ -3,6 +3,19 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+.jumbotron {
+    background: url(../images/bg.jpg) no-repeat;
+}
+
+footer {
+    background: #f4f4f4;
+    height:40px;
+    text-align: center;
+    margin-top:30px;
+    padding-top:10px;
+    overflow:auto;
+}
+
 a {
   color: #00B7FF;
 }
