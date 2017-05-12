@@ -137,6 +137,8 @@ db.users.find().pretty()
 }
 ```
 
+- Be careful on `var upload = multer({ dest: 'uploads/' });`
+
 ```javascript
 // app.js
 var expressValidator = require('express-validator');
@@ -150,7 +152,7 @@ var mongoose = require('mongoose');
 var db = mongoose.connection;
 
 // Handle file uploads
-var upload = multer({ dest: 'uploads/' }); // Important
+var upload = multer({ dest: 'uploads/' }); // Be careful!
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
