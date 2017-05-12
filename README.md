@@ -103,3 +103,94 @@ db.users.find().pretty()
 db.users.update({username: "joeytribbiani"}, {$set: {password: "5678"}})
 db.users.find().pretty()
 ```
+
+- Add additional node modules:
+
+```javascript
+// package.json
+{
+  "name": "node-auth",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "~1.17.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.3",
+    "express": "~4.15.2",
+    "morgan": "~1.8.1",
+    "pug": "~2.0.0-beta11",
+    "serve-favicon": "~2.4.2",
+	"mongodb":"*",
+	"mongoose":"*",
+	"connect-flash":"*",
+	"express-validator":"*",
+	"express-session":"*",
+	"express-messages":"*",
+	"passport":"*",
+	"passport-local":"*",
+	"passport-http":"*",
+	"multer":"*"
+  }
+}
+```
+
+```javascript
+// app.js
+var expressValidator = require('express-validator');
+var session = require('express-session');
+var passport = require('passport');
+var localStrategy = require('passport-local').Strategy;
+var multer = require('multer');
+var flash = require('connect-flash');
+var mongo = require('mongodb');
+var mongoose = require('mongoose');
+var db = mongoose.connection;
+
+// Handle file uploads
+var upload = multer({ dest: 'uploads/' }); // Important
+
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// Handle express sessions
+app.use(session({
+	secret:'secret',
+	saveUninitialized: true,
+	resave:true
+}));
+
+// Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Validator
+// In this example, the formParam value is going to get morphed into form body format useful for printing.
+app.use(expressValidator({
+  errorFormatter: function(param, msg, value) {
+      var namespace = param.split('.')
+      , root    = namespace.shift()
+      , formParam = root;
+
+    while(namespace.length) {
+      formParam += '[' + namespace.shift() + ']';
+    }
+    return {
+      param : formParam,
+      msg   : msg,
+      value : value
+    };
+  }
+}));
+
+app.use(flash());
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res);
+  next();
+});
+```
