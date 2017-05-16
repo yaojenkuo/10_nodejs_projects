@@ -197,31 +197,9 @@ app.use(function (req, res, next) {
 });
 ```
 
-- Be careful that Express 4 no longer supports `req.files`
-- Comment out these codes from node_auth example:
+- Be careful that if there is no image uploaded in your form, **DO NOT** specify `enctype='multipart/form-data'` in the form.
 
-```
+```javascrip
 // register.pug
-//.form-group
-			//label Profile Image
-			//input.form-control(name='profileImage', type='file')
-```
-
-```javascript
-// user.js
-// Check for Image Field
-	//if(req.files.profileImage){
-		//console.log('Uploading File...');
-	
-		// File Info
-		//var profileImageOriginalName = req.file.profileImage.originalname;
-		//var profileImageName = req.files.profileImage.name;
-		//var profileImageMime = req.files.profileImage.mimetype;
-		//var profileImagePath = req.files.profileImage.path;
-		//var profileImageExt = req.files.profileImage.extension;
-		//var profileImageSize = req.files.profileImage.size;
-	//} else {
-		// Set a Default Image
-		//var profileImageName = 'noimage.png';	
-	//}
+form(method='post', action='/users/register')
 ```

@@ -6,8 +6,8 @@ block content
 	ul.errors
 		if errors
 			each error, i in errors
-				li.alert.alert-danger #{error.msg}
-	form(method='post', action='/users/register', enctype='multipart/form-data')
+				div.alert.alert-danger #{error.msg}
+	form(method='post', action='/users/register')
 		.form-group
 			label Name
 			input.form-control(name='name', type='text', placeholder='Enter Name')
@@ -23,7 +23,7 @@ block content
 		.form-group
 			label Confirm Password
 			input.form-control(name='passwordConfirm', type='password', placeholder='Confirm Password')
-		//.form-group
+		.form-group
 			//label Profile Image
 			//input.form-control(name='profileImage', type='file')
-		input.btn.btn-default(name='submit', type='submit', value='Register')
+			input.btn.btn-primary(name='submit', type='submit', value='Register')
