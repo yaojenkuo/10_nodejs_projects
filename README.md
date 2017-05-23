@@ -203,3 +203,55 @@ app.use(function (req, res, next) {
 // register.pug
 form(method='post', action='/users/register')
 ```
+
+- Install [Xcode](https://developer.apple.com/xcode/) before node-gyp
+
+- Install node-gyp before bcrypt
+
+```bash
+npm install -g node-gyp
+node-gyp --python /usr/bin/python2.7
+npm config set python /usr/bin/python2.7
+```
+
+- Install bcrypt
+
+```bash
+brew install bcrypt
+```
+
+- Require bcrypt
+
+```javascript
+// models/user.js
+var bcrypt = require('bcrypt');
+
+// User Schema
+var UserSchema = mongoose.Schema({
+	username: {
+		type: String,
+		index: true
+	},
+	password: {
+		type: String,
+		bcrypt: true, //Important!
+		required: true //Important!
+	},
+	email: {
+		type: String
+	},
+	name: {
+		type: String
+	}
+});
+
+module.exports.createUser = function (newUser, callback) {
+	bcrypt.hash(newUser.password, 10, function (err, hash) {
+		if (err) throw err;
+		// Set hashed pw
+		newUser.password = hash;
+		// Create user
+		newUser.save(callback);
+	});
+}
+```
