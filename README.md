@@ -333,3 +333,46 @@ module.exports.getUserByUsername = function (username, callback) {
 ```
 
 - Be aware to test login actions with a user with bcrypt password!
+
+- Only logged in users are allowed to see Members(index.pug)
+
+```javascript
+router.get('/', ensureAuthenticated, function (req, res, next) {
+	res.render('index', {
+		title: 'Members'
+	});
+});
+
+function ensureAuthenticated(req, res, next) {
+	if (req.isAuthenticated()) {
+		return next();
+	}
+	res.redirect('/users/login');
+};
+```
+
+- Hide Register/Log In when logged in:
+
+```pug
+#navbar.collapse.navbar-collapse
+	ul.nav.navbar-nav
+		li(class=(title === 'Members' ? 'active' : ''))
+			a(href='/') Members
+		if !user
+			li(class=(title === 'Register' ? 'active' : ''))
+				a(href='/users/register') Register
+			li(class=(title === 'Login' ? 'active' : ''))
+				a(href='/users/login') Log In
+	ul.nav.navbar-nav.navbar-right
+		if user
+			li
+				a(href='/users/logout') Logout
+```
+
+```javascript
+// app.js
+app.get('*', function (req, res, next) {
+	res.locals.user = req.user || null;
+	next();
+});
+```
