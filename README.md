@@ -255,3 +255,78 @@ module.exports.createUser = function (newUser, callback) {
 	});
 }
 ```
+
+- Using `passport` to deal with login actions
+
+```javascript
+// routes/users.js
+var passport = require('passport');
+var localStrategy = require('passport-local').Strategy;
+
+passport.serializeUser(function (user, done) {
+	done(null, user.id);
+});
+
+passport.deserializeUser(function (id, done) {
+	User.getUserById(id, function (err, user) {
+		done(err, user);
+	});
+});
+
+passport.use(new localStrategy(
+	function (username, password, done) {
+		User.getUserByUsername(username, function (err, user) {
+			if (err) throw err;
+			if (!user) {
+				console.log('Unknown User');
+				return done(null, false, {
+					message: 'Unknown User'
+				});
+			}
+			User.comparePassword(password, user.password, function (err, isMatch) {
+				if (err) throw err;
+				if (isMatch) {
+					return done(null, user);
+				} else {
+					console.log('Invalid Password');
+					return done(null, false, {
+						message: 'Invalid Password'
+					});
+				}
+			});
+		});
+	}
+));
+
+router.post('/login', passport.authenticate('local', {
+	failureRedirect: '/users/login',
+	failureFlash: 'Invalid username or password'
+}), function (req, res) {
+	console.log('Authentication Successful');
+	req.flash('success', 'You are logged in');
+	res.redirect('/');
+});
+```
+
+```javascript
+// models/user.js
+module.exports.comparePassword = function (candidatePassword, hash, callback) {
+	bcrypt.compare(candidatePassword, hash, function (err, isMatch) {
+		if (err) return callback(err);
+		callback(null, isMatch);
+	});
+};
+
+module.exports.getUserById = function (id, callback) {
+	User.findById(id, callback);
+};
+
+module.exports.getUserByUsername = function (username, callback) {
+	var query = {
+		username: username
+	};
+	User.findOne(query, callback);
+};
+```
+
+- Be aware to test login actions with a user with bcrypt password!
