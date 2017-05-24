@@ -197,11 +197,14 @@ app.use(function (req, res, next) {
 });
 ```
 
-- Be careful that if there is no image uploaded in your form, **DO NOT** specify `enctype='multipart/form-data'` in the form.
+- Be careful that if there is no file uploaded in your form, **DO NOT** specify `enctype='multipart/form-data'` in the form.
 
 ```javascrip
 // register.pug
 form(method='post', action='/users/register')
+
+// login.pug
+form(method='post', action='/users/login')
 ```
 
 - Install [Xcode](https://developer.apple.com/xcode/) before node-gyp
